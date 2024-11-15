@@ -12,51 +12,66 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => ['required','string','max:255'],
-            'email' => ['required','string','email','max:255','unique:users'],
-            'password' => ['required','string','min:8','confirmed'],
-            'phone_number' => ['required','string'],
-            'auth_class' => ['varchar','integer']
-        ]);
-
-        $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password =  Hash::make($request->password);
-        $user->phone_number = $request->phone_number;
-        $user->auth_class = $request->auth_class;
-        $user->save();
-        $token = $user->create_token('auth_token')->access_token;
-
-        return response()->json([
-           'message' => 'User registered successfully',
-            'user' => $user,
-            'token' => $token
-        ], 201);
+        try {
+            $request->validate([
+                'name' => ['required','string','max:255'],
+                'email' => ['required','string','email','max:255','unique:users'],
+                'password' => ['required','string','min:8','confirmed'],
+                'phone_number' => ['required','string'],
+            ]);
+    
+            $user = new User;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password =  Hash::make($request->password);
+            $user->phone_number = $request->phone_number;
+            $user->save();
+            $token = $user->createToken('auth_token')->plainTextToken;
+    
+    
+            return response()->json([
+                'message' => 'User registered successfully',
+                'user' => $user->name,
+                'token' => $token,
+                'id' => $user->id
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Registration failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
+    
     public function login(Request $request)
     {
-        $credentials = $request->only('name', 'password');
-        
+        $request->validate([
+            'login' => 'required|string',
+            'password' => 'required|string',
+        ]);
+    
+        $loginType = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+        $credentials = [
+            $loginType => $request->input('login'),
+            'password' => $request->input('password'),
+        ];
+    
         if (Auth::attempt($credentials)) {
-
             $user = Auth::user();
-
+    
             return response()->json([
                 'status' => 'success',
                 'message' => 'Login successful',
-                'username' => $user->username
+                'user' => $user->name
             ]);
         } else {
             return response()->json([
-               'status' => 'error',
-               'message' => 'Invalid credentials'
+                'status' => 'error',
+                'message' => 'Invalid credentials'
             ], 401);
         }
     }
-
-
+    
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
