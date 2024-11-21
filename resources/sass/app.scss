@@ -1,0 +1,51 @@
+// app.scss
+
+@use 'sass:color';
+
+// Variables
+$primary-color: white;
+$input-color: black;
+$secondary-color: white;
+$font-stack: 'Helvetica, sans-serif';
+
+// Mixins
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+  &:hover {
+    color: color.scale($primary-color, $lightness: -18.75%);
+  }
+}
+
+.heading{
+    font-size:26px;
+    font-weight: bolder;
+    color: $secondary-color;
+    text-align: center;
+    @include border-radius(5px);
+    padding: 20px;
+}
+
+.name{
+    font-size: 20px;
+    color: $primary-color;
+    padding: 20px;
+}
+
+.routes{
+    display: flex;
+    width: 80vw;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+input{
+  color: $input-color;
+}
