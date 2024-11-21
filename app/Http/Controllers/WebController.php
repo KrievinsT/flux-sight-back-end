@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Storage; // Assuming you have a Storage model
+use App\Models\Web; // Assuming you have a Web model
 use Illuminate\Support\Facades\Http;
 
-class StorageController extends Controller
+class WebController extends Controller
 {
     public function store(Request $request)
     {
@@ -19,22 +19,20 @@ class StorageController extends Controller
         // Check if the website is active
         $is_active = $this->checkWebsiteStatus($request->url);
 
-        $storage = new Storage;
-        $storage->user_id = $request->user()->id;
-        $storage->url = $request->url;
-        $storage->seo = $request->seo;
-        $storage->page_speed = $request->page_speed;
-        $storage->is_active = $is_active;
-        $storage->role_id = 1; // Role ID 1 for admin
-        $storage->save();
+        $web = new Web;
+        $web->url = $request->url;
+        $web->seo = $request->seo;
+        $web->page_speed = $request->page_speed;
+        $web->is_active = $is_active;
+        $web->save();
 
-        return response()->json(['message' => 'Website data saved successfully', 'storage' => $storage], 201);
+        return response()->json(['message' => 'Website data saved successfully', 'web' => $web], 201);
     }
 
     public function index(Request $request)
     {
-        $storages = Storage::all();
-        return response()->json($storages); // Return the storage entries as a JSON response
+        $webs = Web::all();
+        return response()->json($webs); // Return the web entries as a JSON response
     }
 
     private function checkWebsiteStatus($url)

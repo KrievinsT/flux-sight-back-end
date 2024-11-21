@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class auth extends Model
+class Auth extends Model
 {
     //
 }

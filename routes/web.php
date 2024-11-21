@@ -3,6 +3,17 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('test-session', function (Illuminate\Http\Request $request) {
+    $request->session()->put('test_key', 'test_value');
+    return response()->json(['message' => 'Session set']);
+});
+
+Route::get('get-session', function (Illuminate\Http\Request $request) {
+    $value = $request->session()->get('test_key');
+    return response()->json(['message' => 'Session value: ' . $value]);
+});
+
+
 Route::get('/', function () {
     return view('welcome');
 });
