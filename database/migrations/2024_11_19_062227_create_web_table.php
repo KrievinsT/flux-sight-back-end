@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('web', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('url');
             $table->string('seo');
             $table->float('page_speed');
