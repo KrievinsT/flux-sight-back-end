@@ -24,6 +24,7 @@
             messageDiv.style.display = 'block';
         }
 
+        // Handle Register and Login Form Submission
         async function handleFormSubmit(event, formType) {
             event.preventDefault();
             const form = event.target;
@@ -78,6 +79,7 @@
             }
         }
 
+        // Handle 2FA Form Submission
         async function handle2FASubmit(event) {
             event.preventDefault();
             const form = event.target;
@@ -140,6 +142,96 @@
                 showMessage('An error occurred. Please try again.', true);
             }
         }
+
+        async function handleForgotPassword(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            if (!csrfToken) {
+                showMessage('CSRF token not found!', true);
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/password/email', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+
+                const data = await response.json();
+                showMessage(data.message, response.status !== 200);
+
+                if (response.status === 200) {
+                    showMessage('Password reset link sent to your email.', false);
+                }
+            } catch (error) {
+                console.error('Error in forgot password flow:', error);
+                showMessage('An error occurred. Please try again.', true);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let token = urlParams.get('token');
+
+            if (token) {
+                token = token.replace(/^\/+/, ''); // Remove any leading slashes
+                document.getElementById('resetToken').value = token;
+            } else {
+                showMessage('Reset token not found. Please use the link provided in your email.', true);
+            }
+        });
+
+        async function handleResetPassword(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            // Log form data to verify token
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            console.log('CSRF Token:', csrfToken); // Log the CSRF token to verify
+            if (!csrfToken) {
+                showMessage('CSRF token not found!', true);
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/password/reset', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+
+                const responseText = await response.text(); // Get the response as text
+                console.log('Response Text:', responseText); // Log the full response text
+
+                try {
+                    const data = JSON.parse(responseText); // Then try to parse the text as JSON
+                    showMessage(data.message, response.status !== 200);
+
+                    if (response.status === 200) {
+                        showMessage('Password reset successful. You can now log in with your new password.', false);
+                    }
+                } catch (jsonError) {
+                    console.error('Error parsing JSON:', jsonError);
+                    showMessage('Unexpected error parsing response. Please try again.', true);
+                }
+            } catch (fetchError) {
+                console.error('Error in reset password flow:', fetchError);
+                showMessage('An error occurred. Please try again.', true);
+            }
+        }
     </script>
 
 </head>
@@ -167,7 +259,10 @@
                             <ul>
                                 <li class="main"><a href="/api/register">/register</a></li>
                                 <li class="main"><a href="/api/login">/login</a></li>
-                                <li class="main"><a href="/api/password/forgot">/password/forgot</a></li>
+                                <li class="main"><a href="/api/password/email">/password/email</a></li>
+                                <!-- Added route -->
+                                <li class="main"><a href="/api/password/reset">/password/reset</a></li>
+                                <!-- Added route -->
                                 <li class="main"><a href="/api/2fa/verify">/2fa/verify</a></li>
                                 <li class="main"><a href="/api/web/store">/web/store</a></li>
                             </ul>
@@ -200,6 +295,23 @@
                             <button type="submit">Login</button>
                         </form>
 
+                        <h3>Forgot Password</h3>
+                        <form method="POST" action="/api/password/email" onsubmit="handleForgotPassword(event)">
+                            <input type="email" name="email" placeholder="Email" required>
+                            <button type="submit">Send Reset Link</button>
+                        </form>
+
+                        <h3>Reset Password</h3>
+                        <form method="POST" action="/api/password/reset" onsubmit="handleResetPassword(event)">
+                            <input type="email" name="email" placeholder="Email" required>
+                            <input type="password" name="password" placeholder="New Password" required>
+                            <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+                            <input type="hidden" name="token"
+                                value="456e9c0b3a391679afde5a04451e02ff264ba21e0d245f9be66091fc6b641e78"
+                                id="resetToken" required>
+                            <button type="submit">Reset Password</button>
+                        </form>
+
                         <h3>Verify 2FA</h3>
                         <form id="2faForm" method="POST" action="/api/2fa/verify" data-form-type=""
                             onsubmit="handle2FASubmit(event)">
@@ -211,6 +323,7 @@
                 </main>
             </div>
         </div>
+
     </div>
 </body>
 

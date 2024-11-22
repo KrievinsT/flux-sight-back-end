@@ -13,11 +13,11 @@ Route::middleware(['web'])->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/2fa/generate', [TwoFactorAuthController::class, 'generate2FACode']);
     Route::post('/2fa/verify', [TwoFactorAuthController::class, 'verify2FACode']);
+    Route::post('/password/email', [AuthController::class, 'sendResetLinkEmail']);
+    Route::post('/password/reset', [AuthController::class, 'resetPassword']);
 });
 
-
-Route::post('/password/forgot', [AuthController::class, 'forgotPassword']);
-Route::post('/password/reset', [AuthController::class, 'resetPassword']);
+// Social authentication routes
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogle']);
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
 

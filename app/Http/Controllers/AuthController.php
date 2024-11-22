@@ -1,11 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Events\PasswordReset;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -64,12 +69,12 @@ class AuthController extends Controller
         \Log::info('register: Session ID', ['session_id' => $request->session()->getId()]);
         $data = $request->session()->get('registration_data');
         \Log::info('register: Retrieved session data', ['data' => $data]);
-    
+
         if (!$data) {
             \Log::error('register: Session data not found');
             return response()->json(['message' => 'Session data not found.'], 400);
         }
-    
+
         try {
             $user = new User;
             $user->name = $data['name'];
@@ -77,11 +82,11 @@ class AuthController extends Controller
             $user->password = Hash::make($data['password']);
             $user->phone_number = $data['phone_number'];
             $user->save();
-    
+
             $token = $user->createToken('auth_token')->plainTextToken;
-    
+
             $request->session()->forget('registration_data');
-    
+
             return response()->json([
                 'message' => 'User registered successfully.',
                 'user' => $user->name,
@@ -92,7 +97,7 @@ class AuthController extends Controller
             \Log::error('Registration failed', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return response()->json(['message' => 'Registration failed', 'error' => $e->getMessage()], 500);
         }
-    }    
+    }
 
     public function login(Request $request)
     {
@@ -100,30 +105,30 @@ class AuthController extends Controller
             \Log::info('login: Session ID', ['session_id' => $request->session()->getId()]);
             $data = $request->session()->get('login_data');
             \Log::info('login: Retrieved session data', ['data' => $data]);
-    
+
             if (!$data) {
                 \Log::error('login: Session data not found');
                 return response()->json(['message' => 'Session data not found.'], 400);
             }
-    
+
             $credentials = [
                 'email' => $data['email'],
                 'password' => $request->password,
             ];
-    
+
             if (!Auth::attempt($credentials)) {
                 \Log::error('login: Invalid credentials', ['credentials' => $credentials]);
                 return response()->json(['message' => 'Invalid login credentials.'], 401);
             }
-    
+
             $user = Auth::user();
             $token = $user->createToken('auth_token')->plainTextToken;
-    
+
             \Log::info('login: User authenticated', ['user' => $user->email]);
-    
+
             // Clear the session data after successful login
             $request->session()->forget('login_data');
-    
+
             return response()->json([
                 'message' => 'Login successful.',
                 'user' => $user->id,
@@ -134,8 +139,51 @@ class AuthController extends Controller
             return response()->json(['message' => 'Unexpected error occurred during login', 'error' => $e->getMessage()], 500);
         }
     }
+    public function sendResetLinkEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+        $status = Password::sendResetLink($request->only('email'));
+        if ($status == Password::RESET_LINK_SENT) {
+            return response()->json(['message' => 'Password reset link sent.'], 200);
+        } else {
+            return response()->json(['message' => 'Unable to send reset link.'], 500);
+        }
+    }
+    public function resetPassword(Request $request)
+    {
+        \Log::info('resetPassword: Received request', ['request' => $request->all()]);
     
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|confirmed',
+            'token' => 'required|string',
+        ]);
     
+        \Log::info('resetPassword: Validation passed');
+    
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+    
+                event(new PasswordReset($user));
+            }
+        );
+    
+        \Log::info('resetPassword: Status', ['status' => $status]);
+    
+        if ($status == Password::PASSWORD_RESET) {
+            \Log::info('resetPassword: Password reset successful');
+            return response()->json(['message' => 'Password has been reset.'], 200);
+        } else {
+            \Log::error('resetPassword: Password reset failed', ['status' => $status]);
+            return response()->json(['message' => 'Unable to reset password.'], 500);
+        }
+    }    
+
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
