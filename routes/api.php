@@ -5,6 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\TwoFactorAuthController;
+use App\Http\Controllers\TwilioSMSController;
+
+Route::get('/sendSMS', [TwilioSMSController::class, 'index']);
 
 Route::middleware(['web'])->group(function () {
     Route::post('/pre-register', [AuthController::class, 'preRegister']);
