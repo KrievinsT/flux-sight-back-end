@@ -7,6 +7,8 @@
 
     <title>Laravel</title>
 
+    <a href="http://127.0.0.1:8000" rel="no-referrer-when-downgrade">…</a>
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
