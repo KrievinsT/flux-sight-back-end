@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -184,34 +183,4 @@ class AuthController extends Controller
         }
     }    
 
-    public function redirectToGoogle()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-
-    public function handleGoogleCallback()
-    {
-        $user = Socialite::driver('google')->user();
-        $findUser = User::where('email', $user->email)->first();
-
-        if ($findUser) {
-            Auth::login($findUser);
-            $token = $findUser->createToken('auth_token')->plainTextToken;
-        } else {
-            $newUser = User::create([
-                'name' => $user->name,
-                'email' => $user->email,
-                'google_id' => $user->id,
-                'password' => encrypt('my-google'),
-            ]);
-            Auth::login($newUser);
-            $token = $newUser->createToken('auth_token')->plainTextToken;
-        }
-
-        return response()->json([
-            'message' => 'User authenticated successfully with Google',
-            'user' => $user,
-            'token' => $token
-        ], 201);
-    }
 }
