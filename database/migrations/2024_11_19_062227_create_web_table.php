@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('web', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
-            $table->string('seo');
+            $table->string('url')->unique();
+            $table->string('title');
+            $table->string('seo')->nullable();
             $table->float('page_speed');
             $table->boolean('is_active')->default(true);
             $table->timestamps();

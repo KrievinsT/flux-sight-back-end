@@ -9,7 +9,7 @@ class TwilioSMSController extends Controller
 {
     public function index(Request $request)
     {
-        try {
+        try {  
 
             $sid = env('TWILIO_SID');
             $token = env('TWILIO_TOKEN');
