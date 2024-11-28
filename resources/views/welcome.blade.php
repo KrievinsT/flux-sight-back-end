@@ -234,8 +234,48 @@
                 showMessage('An error occurred. Please try again.', true);
             }
         }
-    </script>
+        async function handleWebStoreFormSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
 
+            // Store data in local storage
+            const formEntries = Object.fromEntries(formData);
+            localStorage.setItem('web_store', JSON.stringify(formEntries));
+            console.log('Stored data for web_store:', formEntries);
+
+            // Send data to the server
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            if (!csrfToken) {
+                showMessage('CSRF token not found!', true);
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/web/store', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+
+                const data = await response.json();
+                showMessage(data.message, response.status !== 200);
+            } catch (error) {
+                console.error('Error in web store flow:', error);
+                showMessage('An error occurred. Please try again.', true);
+            }
+        }
+
+        function showMessage(message, isError) {
+            // Display a message to the user
+            const messageBox = document.createElement('div');
+            messageBox.textContent = message;
+            messageBox.style.color = isError ? 'red' : 'green';
+            document.body.appendChild(messageBox);
+        }
+    </script>
 </head>
 
 <body class="font-sans antialiased dark:bg-black dark:text-white/50">
@@ -321,8 +361,18 @@
                             <button type="submit">Verify</button>
                         </form>
                         <div id="message" style="display: none; margin-top: 10px;"></div>
+
+                        <!-- New form -->
+                        <h3>Web Store</h3>
+                        <form method="POST" action="/api/web/store" onsubmit="handleWebStoreFormSubmit(event)">
+                            <input type="text" name="url" placeholder="URL" required>
+                            <input type="text" name="title" placeholder="Title" required>
+                            <button type="submit">Submit</button>
+                        </form>
+                        <div id="message" style="display: none; margin-top: 10px;"></div>
                     </div>
                 </main>
+
             </div>
         </div>
 

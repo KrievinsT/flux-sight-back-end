@@ -12,19 +12,19 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Events\PasswordReset;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 class AuthController extends Controller
 {
     public function preRegister(Request $request)
     {
-        \Log::info('preRegister: Session ID', ['session_id' => $request->session()->getId()]);
-
-        // Store all registration data in session
-        $request->session()->put('registration_data', $request->all());
-        \Log::info('preRegister: After setting registration data', ['session' => $request->session()->all()]);
+        \Log::info('preRegister: Received request', ['request' => $request->all()]);
 
         return response()->json([
-            'message' => 'Registration data set for testing.'
+            'message' => 'Registration data received successfully.',
+            'data' => $request->all()
         ], 200);
     }
 
@@ -35,109 +35,124 @@ class AuthController extends Controller
             'login' => 'required|string',
             'password' => 'required|string',
         ]);
-
+    
         \Log::info('preLogin: Validation passed');
-
+    
         $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
         $credentials = [
             $loginType => $request->login,
             'password' => $request->password,
         ];
-
+    
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             \Log::info('preLogin: User authenticated', ['user' => $user->email]);
-
-            $request->session()->put('login_data', [
-                'email' => $user->email,
-                'login' => $user->name
-            ]);
-            \Log::info('preLogin: Session data set', ['session' => $request->session()->get('login_data')]);
-
-            return response()->json([
-                'message' => 'Please verify 2FA to complete login.'
-            ], 200);
+    
+            try {
+                $token = JWTAuth::fromUser($user);
+    
+                return response()->json([
+                    'message' => 'Login successful. Please verify 2FA to complete login.',
+                    'token' => $token,
+                    'email' => $user->email,
+                ], 200);
+            } catch (\Exception $e) {
+                \Log::error('preLogin: Token generation failed', ['error' => $e->getMessage()]);
+                return response()->json(['message' => 'Could not create token.', 'error' => $e->getMessage()], 500);
+            }
         } else {
             \Log::error('preLogin: Invalid credentials');
             return response()->json(['message' => 'Invalid credentials.'], 401);
         }
-    }
-
+    }    
+    
     public function register(Request $request)
     {
-        \Log::info('register: Session ID', ['session_id' => $request->session()->getId()]);
-        $data = $request->session()->get('registration_data');
-        \Log::info('register: Retrieved session data', ['data' => $data]);
-
-        if (!$data) {
-            \Log::error('register: Session data not found');
-            return response()->json(['message' => 'Session data not found.'], 400);
+        \Log::info('register: Request data', ['data' => $request->all()]);
+    
+        $data = $request->all();
+    
+        // Validate the request data
+        $validator = Validator::make($data, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'phone' => 'required|string|max:15',
+        ]);
+    
+        if ($validator->fails()) {
+            \Log::error('register: Validation failed', ['errors' => $validator->errors()]);
+            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 400);
         }
-
+    
         try {
             $user = new User;
             $user->name = $data['name'];
             $user->email = $data['email'];
             $user->password = Hash::make($data['password']);
-            $user->phone_number = $data['phone_number'];
+            $user->phone_number = $data['phone'];
             $user->save();
-
+    
             $token = $user->createToken('auth_token')->plainTextToken;
-
-            $request->session()->forget('registration_data');
-
+    
             return response()->json([
                 'message' => 'User registered successfully.',
                 'user' => $user->name,
                 'token' => $token,
-                'id' => $user->id
+                'id' => $user->id,
+                'company_name' => $user->company_name
             ], 201);
         } catch (\Exception $e) {
             \Log::error('Registration failed', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return response()->json(['message' => 'Registration failed', 'error' => $e->getMessage()], 500);
         }
-    }
+    }    
 
     public function login(Request $request)
     {
         try {
-            \Log::info('login: Session ID', ['session_id' => $request->session()->getId()]);
-            $data = $request->session()->get('login_data');
-            \Log::info('login: Retrieved session data', ['data' => $data]);
-
+            \Log::info('login: Request data', ['data' => $request->all()]);
+    
+            $data = $request->all();
+    
             if (!$data) {
-                \Log::error('login: Session data not found');
-                return response()->json(['message' => 'Session data not found.'], 400);
+                \Log::error('login: Request data not found');
+                return response()->json(['message' => 'Request data not found.'], 400);
             }
-
+    
             $credentials = [
                 'email' => $data['email'],
-                'password' => $request->password,
+                'password' => $data['password'],
             ];
-
+    
             if (!Auth::attempt($credentials)) {
                 \Log::error('login: Invalid credentials', ['credentials' => $credentials]);
                 return response()->json(['message' => 'Invalid login credentials.'], 401);
             }
-
+    
             $user = Auth::user();
+    
+            \Log::info('login: Authenticated user object', ['user' => $user]);
+            
             $token = $user->createToken('auth_token')->plainTextToken;
-
+    
             \Log::info('login: User authenticated', ['user' => $user->email]);
 
-            // Clear the session data after successful login
-            $request->session()->forget('login_data');
-
+            \Log::info('login: User name', ['name' => $user->name]);
+    
             return response()->json([
                 'message' => 'Login successful.',
-                'user' => $user->id,
-                'token' => $token
+                'id' => $user->id,
+                'user' => $user->name,
+                'token' => $token,
+                'company_name' => $user->company_name
             ], 200);
         } catch (\Exception $e) {
             \Log::error('login: Unexpected error', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return response()->json(['message' => 'Unexpected error occurred during login', 'error' => $e->getMessage()], 500);
         }
     }
+    
     public function sendResetLinkEmail(Request $request)
     {
         $request->validate(['email' => 'required|email']);
@@ -148,18 +163,19 @@ class AuthController extends Controller
             return response()->json(['message' => 'Unable to send reset link.'], 500);
         }
     }
+
     public function resetPassword(Request $request)
     {
         \Log::info('resetPassword: Received request', ['request' => $request->all()]);
-    
+
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|string|confirmed',
             'token' => 'required|string',
         ]);
-    
+
         \Log::info('resetPassword: Validation passed');
-    
+
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
@@ -167,13 +183,13 @@ class AuthController extends Controller
                     'password' => Hash::make($password),
                     'remember_token' => Str::random(60),
                 ])->save();
-    
+
                 event(new PasswordReset($user));
             }
         );
-    
+
         \Log::info('resetPassword: Status', ['status' => $status]);
-    
+
         if ($status == Password::PASSWORD_RESET) {
             \Log::info('resetPassword: Password reset successful');
             return response()->json(['message' => 'Password has been reset.'], 200);
@@ -181,6 +197,5 @@ class AuthController extends Controller
             \Log::error('resetPassword: Password reset failed', ['status' => $status]);
             return response()->json(['message' => 'Unable to reset password.'], 500);
         }
-    }    
-
+    }
 }

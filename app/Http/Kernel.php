@@ -2,7 +2,10 @@
 
 namespace App\Http;
 
+use App\Models\Web;
+use App\Services\PageSpeedService;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Console\Scheduling\Schedule;
 
 class Kernel extends HttpKernel
 {
@@ -12,6 +15,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \Illuminate\Http\Middleware\HandleCors::class,
     ];
 
     // Middleware groups
@@ -23,14 +27,16 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\EnsureTokenIsValid::class,
         ],
-    
+
         'api' => [
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
-    
+
     // Route middleware
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
@@ -42,6 +48,20 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'json' => \App\Http\Middleware\ForceJsonResponse::class, // Register custom middleware
+        'json' => \App\Http\Middleware\ForceJsonResponse::class,
+        'check-session' => \App\Http\Middleware\CheckSession::class,
     ];
+
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->call(function (PageSpeedService $service) {
+            $urls = Web::pluck('url');
+            
+            foreach ($urls as $url) {
+                \Log::info('Processing URL: ' . $url);
+                $service->fetchPageSpeedData($url);
+            }
+        })->everyTenMinutes();
+    }
+    
 }

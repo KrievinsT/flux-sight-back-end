@@ -10,12 +10,9 @@ return new class extends Migration
     {
         Schema::create('storage', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key to users table
-            $table->string('url');
-            $table->string('seo');
-            $table->float('page_speed');
-            $table->boolean('is_active')->default(true);
-            $table->foreignId('role_id')->default(1)->constrained()->onDelete('cascade'); // Foreign key to roles table, default 1 (admin)
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Foreign key to users table
+            $table->foreignId('web_id')->constrained('web')->onDelete('cascade'); // Foreign key to web table
+            $table->foreignId('role_id')->default(1)->constrained('roles')->onDelete('cascade'); // Foreign key to roles table, default 1 (admin)
             $table->timestamps();
         });
     }
@@ -25,3 +22,4 @@ return new class extends Migration
         Schema::dropIfExists('storage');
     }
 };
+?>
