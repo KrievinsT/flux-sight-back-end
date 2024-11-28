@@ -10,7 +10,8 @@
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.9",
-        "twilio/sdk": "^8.3"
+        "twilio/sdk": "^8.3",
+        "tymon/jwt-auth": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
