@@ -11,29 +11,21 @@ class GoogleAuthController extends Controller
 {
     public function redirectToGoogle()
     {
-        \Log::info('Google Client ID: ' . env('GOOGLE_CLIENT_ID'));
-        \Log::info('Google Client Secret: ' . env('GOOGLE_CLIENT_SECRET'));
         $state = bin2hex(random_bytes(16)); // Generate a random state parameter
         $redirectUrl = Socialite::driver('google')->stateless()->with(['state' => $state])->redirect()->getTargetUrl();
-
-        \Log::info('Redirect URL: ' . $redirectUrl);
         return response()->json(['url' => $redirectUrl, 'state' => $state]);
     }
 
     public function handleGoogleCallback(Request $request)
     {
-        $state = $request->input('state'); // Get the state parameter from the request
-        \Log::info('Received state: ' . $state);
-    
         try {
             $user = Socialite::driver('google')->stateless()->user();
-            \Log::info('User data from Google:', (array) $user);
-    
             $findUser = User::where('email', $user->email)->first();
     
             if ($findUser) {
                 Auth::login($findUser);
                 $token = $findUser->createToken('auth_token')->plainTextToken;
+                $userDetails = ['id' => $findUser->id, 'name' => $findUser->name, 'email' => $findUser->email];
             } else {
                 $newUser = User::create([
                     'name' => $user->name,
@@ -43,17 +35,19 @@ class GoogleAuthController extends Controller
                 ]);
                 Auth::login($newUser);
                 $token = $newUser->createToken('auth_token')->plainTextToken;
+                $userDetails = ['id' => $newUser->id, 'name' => $newUser->name, 'email' => $newUser->email];
             }
-    
-            \Log::info('Generated token: ' . $token);
-            return redirect()->away('https://flux-sight.vercel.app/dashboard?token=' . $token);
-        } catch (\Exception $e) {
-            \Log::error('Error during Google authentication:', ['error' => $e->getMessage()]);
-            return response()->json([
-                'message' => 'Authentication with Google failed',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }    
 
+            $query = http_build_query([
+                'token' => $token,
+                'id' => $userDetails['id'],
+                'name' => $userDetails['name'],
+                'email' => $userDetails['email']
+            ]);
+    
+            return redirect()->away('http://localhost:3000/login?' . $query);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Authentication with Google failed', 'error' => $e->getMessage()], 500);
+        }
+    }
 }
