@@ -16,16 +16,9 @@ class StorageController extends Controller
             'page_speed' => 'required|numeric',
         ]);
 
-        // Check if the website is active
-        $is_active = $this->checkWebsiteStatus($request->url);
-
         $storage = new Storage;
-        $storage->user_id = $request->user()->id;
-        $storage->url = $request->url;
-        $storage->seo = $request->seo;
-        $storage->page_speed = $request->page_speed;
-        $storage->is_active = $is_active;
-        $storage->role_id = 1; // Role ID 1 for admin
+        $storage->user_id = $request->user()->id->nullable();
+        $storage->web_id = $request->web()->id;
         $storage->save();
 
         return response()->json(['message' => 'Website data saved successfully', 'storage' => $storage], 201);
@@ -34,7 +27,7 @@ class StorageController extends Controller
     public function index(Request $request)
     {
         $storages = Storage::all();
-        return response()->json($storages); // Return the storage entries as a JSON response
+        return response()->json($storages);
     }
 
     private function checkWebsiteStatus($url)

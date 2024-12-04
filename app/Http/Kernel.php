@@ -51,17 +51,5 @@ class Kernel extends HttpKernel
         'json' => \App\Http\Middleware\ForceJsonResponse::class,
         'check-session' => \App\Http\Middleware\CheckSession::class,
     ];
-
-    protected function schedule(Schedule $schedule)
-    {
-        $schedule->call(function (PageSpeedService $service) {
-            $urls = Web::pluck('url');
-            
-            foreach ($urls as $url) {
-                \Log::info('Processing URL: ' . $url);
-                $service->fetchPageSpeedData($url);
-            }
-        })->everyTenMinutes();
-    }
     
 }

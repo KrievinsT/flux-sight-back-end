@@ -17,8 +17,10 @@ return new class extends Migration {
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone_number')->nullable();
+            $table->string('img')->nullable();
             $table->string('two_factor_code')->nullable();
             $table->timestamp('two_factor_expires_at')->nullable();
+            // $table->string('username');
             $table->rememberToken();
             $table->timestamps();
         });
