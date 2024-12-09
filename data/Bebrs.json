@@ -1,0 +1,383 @@
+[
+    {
+        "created_at": "2024-12-09 12:57:05",
+        "url": "https:\/\/www.vtdt.lv",
+        "title": "Joks",
+        "username": "Bebrs",
+        "data": {
+            "title": "Joks",
+            "id": "https:\/\/www.vtdt.lv\/",
+            "metrics": {
+                "CUMULATIVE_LAYOUT_SHIFT_SCORE": {
+                    "Weighted Average": "5.7578 ms",
+                    "Percentile": "0 ms",
+                    "Category": "FAST"
+                },
+                "EXPERIMENTAL_TIME_TO_FIRST_BYTE": {
+                    "Weighted Average": "537.2600 ms",
+                    "Percentile": "588 ms",
+                    "Category": "FAST"
+                },
+                "FIRST_CONTENTFUL_PAINT_MS": {
+                    "Weighted Average": "1,152.7800 ms",
+                    "Percentile": "1459 ms",
+                    "Category": "FAST"
+                },
+                "INTERACTION_TO_NEXT_PAINT": {
+                    "Weighted Average": "143.9250 ms",
+                    "Percentile": "161 ms",
+                    "Category": "FAST"
+                },
+                "LARGEST_CONTENTFUL_PAINT_MS": {
+                    "Weighted Average": "1,535.2000 ms",
+                    "Percentile": "1940 ms",
+                    "Category": "FAST"
+                }
+            },
+            "bootup-time": {
+                "title": "Reduce JavaScript execution time",
+                "description": "Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. [Learn how to reduce Javascript execution time](https:\/\/developer.chrome.com\/docs\/lighthouse\/performance\/bootup-time\/).",
+                "displayValue": "1.5\u00a0s",
+                "details": [
+                    {
+                        "url": "https:\/\/static.parastorage.com\/unpkg\/react@18.3.1\/umd\/react.production.min.js",
+                        "total": "1,112.9964 ms",
+                        "scriptParseCompile": "0.4020 ms",
+                        "scripting": "924.1104 ms"
+                    },
+                    {
+                        "url": "https:\/\/www.vtdt.lv\/",
+                        "total": "363.5724 ms",
+                        "scriptParseCompile": "14.9592 ms",
+                        "scripting": "121.2180 ms"
+                    },
+                    {
+                        "url": "Unattributable",
+                        "total": "301.2108 ms",
+                        "scriptParseCompile": "0.0000 ms",
+                        "scripting": "52.1340 ms"
+                    },
+                    {
+                        "url": "https:\/\/static.parastorage.com\/services\/wix-thunderbolt\/dist\/cyclicTabbing.76c1f149.chunk.min.js",
+                        "total": "144.7920 ms",
+                        "scriptParseCompile": "0.2688 ms",
+                        "scripting": "136.7220 ms"
+                    },
+                    {
+                        "url": "https:\/\/browser.sentry-cdn.com\/6.18.2\/bundle.min.js",
+                        "total": "124.0896 ms",
+                        "scriptParseCompile": "1.2108 ms",
+                        "scripting": "119.6640 ms"
+                    },
+                    {
+                        "url": "https:\/\/static.parastorage.com\/unpkg\/lodash@4.17.21\/lodash.min.js",
+                        "total": "122.2452 ms",
+                        "scriptParseCompile": "1.4580 ms",
+                        "scripting": "113.5452 ms"
+                    },
+                    {
+                        "url": "https:\/\/static.parastorage.com\/services\/wix-thunderbolt\/dist\/triggersAndReactions.66bcbb0c.chunk.min.js",
+                        "total": "53.2296 ms",
+                        "scriptParseCompile": "0.1440 ms",
+                        "scripting": "51.3936 ms"
+                    }
+                ]
+            },
+            "server-response-time": {
+                "title": "Initial server response time was short",
+                "description": "Root document took 10\u00a0ms"
+            },
+            "diagnostics": {
+                "title": "Diagnostics",
+                "description": "Collection of useful page vitals.",
+                "score": 1,
+                "scoreDisplayMode": "informative",
+                "details": [
+                    {
+                        "numTasksOver500ms": 0,
+                        "maxServerLatency": 3,
+                        "numRequests": 169,
+                        "round_trip_time": "0.0004806 ms",
+                        "numOfStylesheets": 0,
+                        "numOfScripts": 75,
+                        "mainDocumentTransferSize": "144,619 bytes",
+                        "max_round_trip_time": "5.93865 ms",
+                        "numTasksOver50ms": 7,
+                        "totalByteWeight": "2,310,411 bytes",
+                        "totalTaskTime": "2,220.2760 ms",
+                        "numTasksOver25ms": 14,
+                        "numTasks": 2151,
+                        "numTasksOver100ms": 3,
+                        "numFonts": 6,
+                        "numTasksOver10ms": 45,
+                        "throughput": "1,330,361,221"
+                    }
+                ]
+            },
+            "metrics_all": {
+                "title": "Metrics",
+                "details": [
+                    {
+                        "observedLargestContentfulPaintTs": 528524777324,
+                        "observedLoadTs": 528524734888,
+                        "observedDomContentLoaded": 403,
+                        "observedLastVisualChange": 3229,
+                        "observedFirstPaintTs": 528524597611,
+                        "maxPotentialFID": 137,
+                        "observedFirstVisualChange": 295,
+                        "speedIndex": 3876,
+                        "observedNavigationStartTs": 528524295614,
+                        "observedFirstContentfulPaintTs": 528524597611,
+                        "observedLargestContentfulPaintAllFrames": 482,
+                        "timeToFirstByte": 601,
+                        "firstContentfulPaint": 3615,
+                        "observedFirstContentfulPaint": 302,
+                        "observedLoad": 439,
+                        "observedSpeedIndex": 653,
+                        "observedFirstVisualChangeTs": 528524590614,
+                        "observedTraceEnd": 6029,
+                        "observedFirstContentfulPaintAllFrames": 302,
+                        "observedLastVisualChangeTs": 528527524614,
+                        "observedDomContentLoadedTs": 528524698308,
+                        "observedFirstPaint": 302,
+                        "observedLargestContentfulPaintAllFramesTs": 528524777324,
+                        "largestContentfulPaint": 7143,
+                        "observedSpeedIndexTs": 528524948823,
+                        "totalBlockingTime": 235,
+                        "observedFirstContentfulPaintAllFramesTs": 528524597611,
+                        "cumulativeLayoutShift": 0.17255859375000002,
+                        "observedLargestContentfulPaint": 482,
+                        "cumulativeLayoutShiftMainFrame": 0.17255859375000002,
+                        "observedNavigationStart": 0,
+                        "observedTraceEndTs": 528530324575,
+                        "observedCumulativeLayoutShiftMainFrame": 0.17255859375000002,
+                        "observedCumulativeLayoutShift": 0.17255859375000002,
+                        "observedTimeOriginTs": 528524295614,
+                        "observedTimeOrigin": 0,
+                        "interactive": 12635,
+                        "lcpInvalidated": null
+                    },
+                    {
+                        "observedLargestContentfulPaintTs": null,
+                        "observedLoadTs": null,
+                        "observedDomContentLoaded": null,
+                        "observedLastVisualChange": null,
+                        "observedFirstPaintTs": null,
+                        "maxPotentialFID": null,
+                        "observedFirstVisualChange": null,
+                        "speedIndex": null,
+                        "observedNavigationStartTs": null,
+                        "observedFirstContentfulPaintTs": null,
+                        "observedLargestContentfulPaintAllFrames": null,
+                        "timeToFirstByte": null,
+                        "firstContentfulPaint": null,
+                        "observedFirstContentfulPaint": null,
+                        "observedLoad": null,
+                        "observedSpeedIndex": null,
+                        "observedFirstVisualChangeTs": null,
+                        "observedTraceEnd": null,
+                        "observedFirstContentfulPaintAllFrames": null,
+                        "observedLastVisualChangeTs": null,
+                        "observedDomContentLoadedTs": null,
+                        "observedFirstPaint": null,
+                        "observedLargestContentfulPaintAllFramesTs": null,
+                        "largestContentfulPaint": null,
+                        "observedSpeedIndexTs": null,
+                        "totalBlockingTime": null,
+                        "observedFirstContentfulPaintAllFramesTs": null,
+                        "cumulativeLayoutShift": null,
+                        "observedLargestContentfulPaint": null,
+                        "cumulativeLayoutShiftMainFrame": null,
+                        "observedNavigationStart": null,
+                        "observedTraceEndTs": null,
+                        "observedCumulativeLayoutShiftMainFrame": null,
+                        "observedCumulativeLayoutShift": null,
+                        "observedTimeOriginTs": null,
+                        "observedTimeOrigin": null,
+                        "interactive": null,
+                        "lcpInvalidated": false
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "created_at": "2024-12-09 13:02:01",
+        "url": "https:\/\/advokati-juristi.temida.lv\/lv\/",
+        "title": "Advokati",
+        "username": "Bebrs",
+        "data": {
+            "title": "Advokati",
+            "id": "https:\/\/advokati-juristi.temida.lv\/lv\/",
+            "metrics": {
+                "CUMULATIVE_LAYOUT_SHIFT_SCORE": {
+                    "Weighted Average": "5.1885 ms",
+                    "Percentile": "3 ms",
+                    "Category": "FAST"
+                },
+                "EXPERIMENTAL_TIME_TO_FIRST_BYTE": {
+                    "Weighted Average": "1,471.5000 ms",
+                    "Percentile": "2210 ms",
+                    "Category": "SLOW"
+                },
+                "FIRST_CONTENTFUL_PAINT_MS": {
+                    "Weighted Average": "2,285.5500 ms",
+                    "Percentile": "2984 ms",
+                    "Category": "AVERAGE"
+                },
+                "LARGEST_CONTENTFUL_PAINT_MS": {
+                    "Weighted Average": "2,318.3750 ms",
+                    "Percentile": "3014 ms",
+                    "Category": "AVERAGE"
+                }
+            },
+            "bootup-time": {
+                "title": "JavaScript execution time",
+                "description": "Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. [Learn how to reduce Javascript execution time](https:\/\/developer.chrome.com\/docs\/lighthouse\/performance\/bootup-time\/).",
+                "displayValue": "0.3\u00a0s",
+                "details": [
+                    {
+                        "url": "https:\/\/advokati-juristi.temida.lv\/wp-content\/uploads\/fusion-scripts\/5e1b5df406ca7fb7f20ee20dd59b76e3.min.js?ver=3.11.11",
+                        "total": "308.5980 ms",
+                        "scriptParseCompile": "11.3328 ms",
+                        "scripting": "88.1400 ms"
+                    },
+                    {
+                        "url": "https:\/\/advokati-juristi.temida.lv\/lv\/",
+                        "total": "301.3368 ms",
+                        "scriptParseCompile": "2.4924 ms",
+                        "scripting": "8.9832 ms"
+                    },
+                    {
+                        "url": "https:\/\/advokati-juristi.temida.lv\/wp-includes\/js\/jquery\/jquery.min.js?ver=3.7.1",
+                        "total": "282.0144 ms",
+                        "scriptParseCompile": "2.1720 ms",
+                        "scripting": "184.0260 ms"
+                    },
+                    {
+                        "url": "Unattributable",
+                        "total": "145.5660 ms",
+                        "scriptParseCompile": "0.0000 ms",
+                        "scripting": "2.4696 ms"
+                    }
+                ]
+            },
+            "server-response-time": {
+                "title": "Reduce initial server response time",
+                "description": "Root document took 1,490\u00a0ms"
+            },
+            "diagnostics": {
+                "title": "Diagnostics",
+                "description": "Collection of useful page vitals.",
+                "score": 1,
+                "scoreDisplayMode": "informative",
+                "details": [
+                    {
+                        "numTasksOver500ms": 0,
+                        "maxServerLatency": 20.5,
+                        "numRequests": 70,
+                        "round_trip_time": "0.0005507 ms",
+                        "numOfStylesheets": 12,
+                        "numOfScripts": 10,
+                        "mainDocumentTransferSize": "201,526 bytes",
+                        "max_round_trip_time": "20.27192 ms",
+                        "numTasksOver50ms": 4,
+                        "totalByteWeight": "1,698,103 bytes",
+                        "totalTaskTime": "921.2170 ms",
+                        "numTasksOver25ms": 10,
+                        "numTasks": 1034,
+                        "numTasksOver100ms": 0,
+                        "numFonts": 4,
+                        "numTasksOver10ms": 16,
+                        "throughput": "49,944,242,414"
+                    }
+                ]
+            },
+            "metrics_all": {
+                "title": "Metrics",
+                "details": [
+                    {
+                        "observedLargestContentfulPaintTs": 396743401107,
+                        "observedLoadTs": 396744109118,
+                        "observedDomContentLoaded": 2188,
+                        "observedLastVisualChange": 2645,
+                        "observedFirstPaintTs": 396743401107,
+                        "maxPotentialFID": 118,
+                        "observedFirstVisualChange": 2095,
+                        "speedIndex": 5580,
+                        "observedNavigationStartTs": 396741300507,
+                        "observedFirstContentfulPaintTs": 396743401107,
+                        "observedLargestContentfulPaintAllFrames": 2101,
+                        "timeToFirstByte": 601,
+                        "firstContentfulPaint": 2819,
+                        "observedFirstContentfulPaint": 2101,
+                        "observedLoad": 2809,
+                        "observedSpeedIndex": 2244,
+                        "observedFirstVisualChangeTs": 396743395507,
+                        "observedTraceEnd": 5135,
+                        "observedFirstContentfulPaintAllFrames": 2101,
+                        "observedLastVisualChangeTs": 396743945507,
+                        "observedDomContentLoadedTs": 396743488188,
+                        "observedFirstPaint": 2101,
+                        "observedLargestContentfulPaintAllFramesTs": 396743401107,
+                        "largestContentfulPaint": 5476,
+                        "observedSpeedIndexTs": 396743544957,
+                        "totalBlockingTime": 72,
+                        "observedFirstContentfulPaintAllFramesTs": 396743401107,
+                        "cumulativeLayoutShift": 0.08530566386497551,
+                        "observedLargestContentfulPaint": 2101,
+                        "cumulativeLayoutShiftMainFrame": 0.08530566386497551,
+                        "observedNavigationStart": 0,
+                        "observedTraceEndTs": 396746435837,
+                        "observedCumulativeLayoutShiftMainFrame": 0.08530566386497551,
+                        "observedCumulativeLayoutShift": 0.08530566386497551,
+                        "observedTimeOriginTs": 396741300507,
+                        "observedTimeOrigin": 0,
+                        "interactive": 5916,
+                        "lcpInvalidated": null
+                    },
+                    {
+                        "observedLargestContentfulPaintTs": null,
+                        "observedLoadTs": null,
+                        "observedDomContentLoaded": null,
+                        "observedLastVisualChange": null,
+                        "observedFirstPaintTs": null,
+                        "maxPotentialFID": null,
+                        "observedFirstVisualChange": null,
+                        "speedIndex": null,
+                        "observedNavigationStartTs": null,
+                        "observedFirstContentfulPaintTs": null,
+                        "observedLargestContentfulPaintAllFrames": null,
+                        "timeToFirstByte": null,
+                        "firstContentfulPaint": null,
+                        "observedFirstContentfulPaint": null,
+                        "observedLoad": null,
+                        "observedSpeedIndex": null,
+                        "observedFirstVisualChangeTs": null,
+                        "observedTraceEnd": null,
+                        "observedFirstContentfulPaintAllFrames": null,
+                        "observedLastVisualChangeTs": null,
+                        "observedDomContentLoadedTs": null,
+                        "observedFirstPaint": null,
+                        "observedLargestContentfulPaintAllFramesTs": null,
+                        "largestContentfulPaint": null,
+                        "observedSpeedIndexTs": null,
+                        "totalBlockingTime": null,
+                        "observedFirstContentfulPaintAllFramesTs": null,
+                        "cumulativeLayoutShift": null,
+                        "observedLargestContentfulPaint": null,
+                        "cumulativeLayoutShiftMainFrame": null,
+                        "observedNavigationStart": null,
+                        "observedTraceEndTs": null,
+                        "observedCumulativeLayoutShiftMainFrame": null,
+                        "observedCumulativeLayoutShift": null,
+                        "observedTimeOriginTs": null,
+                        "observedTimeOrigin": null,
+                        "interactive": null,
+                        "lcpInvalidated": false
+                    }
+                ]
+            }
+        }
+    }
+]

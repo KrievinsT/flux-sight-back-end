@@ -1,0 +1,65 @@
+{
+    "metrics": [],
+    "bootup-time": {
+        "title": "JavaScript execution time",
+        "description": "Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. [Learn how to reduce Javascript execution time](https:\/\/developer.chrome.com\/docs\/lighthouse\/performance\/bootup-time\/).",
+        "displayValue": "0.5\u00a0s",
+        "details": [
+            {
+                "url": "http:\/\/cesumakslasskola.lv\/",
+                "total": "336.3880 ms",
+                "scriptParseCompile": "4.4800 ms",
+                "scripting": "173.2320 ms"
+            },
+            {
+                "url": "http:\/\/ajax.googleapis.com\/ajax\/libs\/jquery\/1.4.2\/jquery.min.js",
+                "total": "295.2280 ms",
+                "scriptParseCompile": "7.8040 ms",
+                "scripting": "190.0000 ms"
+            },
+            {
+                "url": "Unattributable",
+                "total": "260.0640 ms",
+                "scriptParseCompile": "0.0000 ms",
+                "scripting": "8.0200 ms"
+            },
+            {
+                "url": "http:\/\/cesumakslasskola.lv\/wp-includes\/js\/jquery\/jquery.js?ver=1.12.4",
+                "total": "210.4280 ms",
+                "scriptParseCompile": "7.7560 ms",
+                "scripting": "75.3960 ms"
+            }
+        ]
+    },
+    "server-response-time": {
+        "title": "Initial server response time was short",
+        "description": "Root document took 20\u00a0ms"
+    },
+    "diagnostics": {
+        "title": "Diagnostics",
+        "description": "Collection of useful page vitals.",
+        "score": 1,
+        "scoreDisplayMode": "informative",
+        "details": [
+            {
+                "numTasksOver500ms": 0,
+                "maxServerLatency": 1.5,
+                "numRequests": 45,
+                "round_trip_time": "0.0013950 ms",
+                "numOfStylesheets": 4,
+                "numOfScripts": 8,
+                "mainDocumentTransferSize": "47,242 bytes",
+                "max_round_trip_time": "1.58144 ms",
+                "numTasksOver50ms": 1,
+                "totalByteWeight": "785,901 bytes",
+                "totalTaskTime": "298.9850 ms",
+                "numTasksOver25ms": 2,
+                "numTasks": 559,
+                "numTasksOver100ms": 0,
+                "numFonts": 1,
+                "numTasksOver10ms": 6,
+                "throughput": "24,949,439,994"
+            }
+        ]
+    }
+}
