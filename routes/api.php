@@ -19,7 +19,7 @@ Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleC
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// wip reset pass routes
+//reset pass routes
 Route::post('/password/email', [AuthController::class, 'sendResetLinkEmail']);
 Route::post('/password/reset', [AuthController::class, 'resetPassword']);
 
@@ -50,3 +50,13 @@ Route::put('/web/{id}', [WebController::class, 'update']);
 // });
 // check reset password token
 Route::post('/check-password-reset-token', [AuthController::class, 'checkPasswordResetToken']);
+
+//delete
+Route::delete('/delete-record/{id}', [WebController::class, 'deleteRecord']);
+
+//notifs
+Route::post('/notifications', [UserController::class, 'checkUserDetails']);
+
+//if allow sms or email notifications
+Route::put('/user/notifications', [UserController::class, 'updateNotifications']);
+Route::get('/user/notifications', [UserController::class, 'getNotificationSettings']);

@@ -1,0 +1,68 @@
+{
+    "username": "sik",
+    "updated_at": "2024-12-02T13:20:56.252144Z",
+    "0": {
+        "created_at": "2024-12-02 14:04:09",
+        "url": "http:\/\/www.livonia.lv\/lv\/",
+        "title": "test3",
+        "seo": 0.92,
+        "page_speed": 0.59,
+        "is_active": true
+    },
+    "1": {
+        "created_at": "2024-12-02 14:07:19",
+        "url": "https:\/\/vdisain.lv\/majaslapa\/",
+        "title": "test3",
+        "seo": 1,
+        "page_speed": 0.28,
+        "is_active": true
+    },
+    "2": {
+        "created_at": "2024-12-02 14:09:21",
+        "url": "https:\/\/www.webdev.lv\/majas-lapu-izstrade\/",
+        "title": "Test3",
+        "seo": 0.83,
+        "page_speed": 0.38,
+        "is_active": true
+    },
+    "3": {
+        "created_at": "2024-12-02 14:10:49",
+        "url": "http:\/\/majaslapa.lv\/",
+        "title": "Test4",
+        "seo": 0.91,
+        "page_speed": 0.7,
+        "is_active": true
+    },
+    "4": {
+        "created_at": "2024-12-02 14:13:12",
+        "url": "https:\/\/www.sesikaki.lv\/majaslapa-majas-lapa-timekla-vietne\/",
+        "title": "Test5",
+        "seo": 0.92,
+        "page_speed": 0.78,
+        "is_active": true
+    },
+    "5": {
+        "created_at": "2024-12-02 14:16:00",
+        "url": "https:\/\/www.sesikaki.lv\/tulkosana\/",
+        "title": "Test5",
+        "data": {
+            "url": "https:\/\/www.sesikaki.lv\/tulkosana\/",
+            "title": "Test5",
+            "seo": 1,
+            "page_speed": 0.48,
+            "is_active": true,
+            "updated_at": "2024-12-02T14:16:00.000000Z",
+            "created_at": "2024-12-02T14:16:00.000000Z",
+            "id": 8
+        }
+    },
+    "6": {
+        "created_at": "2024-12-03 07:46:04",
+        "url": "https:\/\/sem.lv\/",
+        "title": "SEM",
+        "data": {
+            "seo": 0.85,
+            "page_speed": 0.69
+        }
+    }
+}
